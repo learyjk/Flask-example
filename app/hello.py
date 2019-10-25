@@ -15,7 +15,7 @@ engine = create_engine(os.getenv("DATABASE_URL"))
 
 @app.route('/')
 def home():
-    return render_template('home.html', var='DATABASE_URL')
+    return render_template('home.html', var=os.getenv('DATABASE_URL'))
 
 
 @app.route('/about')
