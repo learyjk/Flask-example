@@ -3,7 +3,6 @@ import sqlalchemy as db
 
 from flask import Flask, render_template
 from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy import inspect
 
 
 app = Flask(__name__)
@@ -25,9 +24,9 @@ def home():
     return render_template('home.html', result=result)
 
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
+@app.route('/wodg')
+def wodg():
+    return render_template('wodg.html')
 
 
 if __name__ == '__main__':
