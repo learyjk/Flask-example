@@ -4,10 +4,10 @@
     <div class="wodg">
         <h1>WODG</h1>
         <p>Workout generator goes here.</p>
-        {% for row in result %}
+        
+        {% for item in workout %}
 
-            <p>{{row['name']}}</p>
-            <p>{{row['workout']}}</p>
+            <p>{{item}}</p>
 
         {% endfor %}
 
