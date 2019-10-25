@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
 
 app = Flask(__name__)
 
@@ -10,12 +10,12 @@ if not os.getenv("DATABASE_URL"):
     raise RuntimeError("DATABASE_URL is not set")
 
 
-db = SQLAlchemy()
+engine = create_engine(os.getenv("DATABASE_URL"))
 
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template('home.html', var='DATABASE_URL')
 
 
 @app.route('/about')
