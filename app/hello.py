@@ -16,17 +16,17 @@ engine = db.create_engine(os.getenv("DATABASE_URL"), echo=True)
 data = scoped_session(sessionmaker(bind=engine))
 
 # get all rows
-result = data.execute('SELECT * FROM first')
+result = data.execute('SELECT * FROM wods')
 
 
 @app.route('/')
 def home():
-    return render_template('home.html', result=result)
+    return render_template('home.html')
 
 
 @app.route('/wodg')
 def wodg():
-    return render_template('wodg.html')
+    return render_template('wodg.html', result=result)
 
 
 if __name__ == '__main__':
