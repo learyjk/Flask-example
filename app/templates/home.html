@@ -6,4 +6,11 @@
         <p>Hi, this is my personal website.</p>
         <p>The DATABASE_URL is: {{var}}</p>
 
+        {% for row in result %}
+
+            <li>{{row['first_name']}}</li>
+
+        {% endfor %}
+
+
 {% endblock %}
