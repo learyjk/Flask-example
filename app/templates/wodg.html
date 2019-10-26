@@ -1,14 +1,24 @@
 {% extends "layout.html" %}
 {% block content %}
+    <p>
+    <div class="wodg" align="center">
 
-    <div class="wodg">
-        <h1>WODG</h1>
-        <p>Workout generator goes here.</p>
-        
-        {% for item in workout %}
+        <div class="card border-dark mb-3" style="max-width: 18rem;">
 
-            <p>{{item}}</p>
+            <div class="card-header"><h1>{{workout[0]}}</h1></div>
+            <div class="card-body text-dark">
+                <h5 class="card-title">{{workout[1]}}</h5>
+                <p class="card-text">
+                    {% for i in range(2, workout|count) %}
 
-        {% endfor %}
+                        {{workout[i]}}<br>
+
+                    {% endfor %}
+                </p>
+            </div>
+            <a href="#" class="btn btn-primary">Random WOD</a>
+
+        </div>
+    </div>
 
 {% endblock %}
