@@ -12,8 +12,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 app = Flask(__name__)
 # Configure session to use filesystem (instead of signed cookies)
 
-os.environ['SECRET_KEY'] = '3r6t_QQHDSCMtGGjbBYuQQ'
-os.environ['DATABASE_URL'] = 'postgres://sbcrjibpraivpg:cac3d5eaf635b550f67cf802268437d7f2dd6eccf84a13506ae52c5be32f53e4@ec2-107-21-200-103.compute-1.amazonaws.com:5432/d4keqqkhpmbhkn'
+#os.environ['SECRET_KEY'] = '3r6t_QQHDSCMtGGjbBYuQQ'
+#os.environ['DATABASE_URL'] = 'postgres://sbcrjibpraivpg:cac3d5eaf635b550f67cf802268437d7f2dd6eccf84a13506ae52c5be32f53e4@ec2-107-21-200-103.compute-1.amazonaws.com:5432/d4keqqkhpmbhkn'
 app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
