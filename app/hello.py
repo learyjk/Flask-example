@@ -86,7 +86,7 @@ def login():
 
         # Ensure username exists and password is correct
         if row:
-            if row['username'] == username or not check_password_hash(row["hash"], request.form.get("password")):
+            if len(row) != 1 or not check_password_hash(row["hash"], request.form.get("password")):
                 return render_template("login.html", message="Invalid username and/or password")
 
         # Remember which user has logged in
