@@ -55,9 +55,9 @@ def register():
         # query the database for username provided
         row = data.execute("SELECT * FROM users WHERE username=:username", {'username': username}).fetchone()
 
+        # check if username is available.
         if row:
-            if row['username'] == username or not check_password_hash(row["hash"], request.form.get("password")):
-                return render_template("register.html", message="Invalid username/password")
+            return render_template("register.html", message="Invalid username/password")
 
         data.execute("INSERT INTO users(user_id, hash, username, email) VALUES (default, :h, :u, :e)", {'h': hash, 'u': username, 'e': email})
         data.commit()
@@ -86,8 +86,10 @@ def login():
 
         # Ensure username exists and password is correct
         if row:
-            if len(row) != 1 or not check_password_hash(row["hash"], request.form.get("password")):
+            if not check_password_hash(row["hash"], request.form.get("password")):
                 return render_template("login.html", message="Invalid username and/or password")
+        else:
+            return render_template("login.html", message="Invalid username and/or password")
 
         # Remember which user has logged in
         session["user_id"] = row["user_id"]
