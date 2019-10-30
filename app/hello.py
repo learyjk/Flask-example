@@ -8,6 +8,8 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from random import randint
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from helpers import login_required
+
 
 app = Flask(__name__)
 # Configure session to use filesystem (instead of signed cookies)
@@ -32,6 +34,7 @@ data = scoped_session(sessionmaker(bind=engine))
 
 
 @app.route('/')
+@login_required
 def home():
     return render_template('home.html')
 
@@ -59,8 +62,10 @@ def register():
         if row:
             return render_template("register.html", message="Invalid username/password")
 
-        data.execute("INSERT INTO users(user_id, hash, username, email) VALUES (default, :h, :u, :e)", {'h': hash, 'u': username, 'e': email})
+        data.execute("INSERT INTO users(user_id, hash, username, email) VALUES(default, :h, :u, :e)", {'h': hash, 'u': username, 'e': email})
         data.commit()
+
+        session["user_id"] = username
 
         return redirect('/')
     else:
@@ -102,6 +107,7 @@ def login():
 
 
 @app.route('/wodg')
+@login_required
 def wodg():
 
     # get random int between 0 and num rows in workout database.
@@ -124,6 +130,7 @@ def wodg():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     session.clear()
     return render_template("login.html", message="You have logged out!")
