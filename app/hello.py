@@ -132,9 +132,9 @@ def wodg():
     # get random int between 0 and num rows in workout database.
     num_rows = data.execute('SELECT count(*) FROM wods').fetchall()[0][0]
     data.commit()
-    workout_id = randint(1, num_rows)
+    id = randint(1, num_rows)
     row = data.execute(
-        'SELECT * FROM wods WHERE id=:workout_id', {'workout_id': workout_id}).fetchone()
+        "SELECT * FROM wods WHERE id=:id", {'id': id}).fetchone()
     data.commit()
 
     # creates a row with name as workout[1], type as [2], and the rest.
