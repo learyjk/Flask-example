@@ -1,3 +1,6 @@
+Website is live!
+http://flask-example-nunchuck.herokuapp.com/
+
 This is my final project for CS50.  My idea was to build a WOD (Workout of the Day) Generator/Tracker that adhered to the following learning objectives:
 
 1. Shall be developed on my local machine and deployed to the web via GitHub and Heroku.
