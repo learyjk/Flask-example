@@ -19,3 +19,11 @@ Still to be desired:
   a. Minimum username/password requirements.
   b. Send an email welcoming the user upon registration.
   c. Score entry validation
+
+Problems encountered, lessons learned, or things I had to study beyond CS50 content:
+1. Deployment to Heroku worked at first but at some point my program would randomly return users to the login page after various amounts of clicking through the app.  Solution was to change from gunicorn v19.9.0 to v18.0.0 as discussed in the following thread: https://github.com/miguelgrinberg/flasky/issues/58
+2. Had to get smart on the Procfile.  Inital deployent was difficult because I didn;t know I had to use --chdir flag since my app "hello.py" was nested in a folder called "app" and I wasn't telling Heroku that.
+3. Still need to read up on environment variables esp. DATABASE_URL and SECRET_KEY.  Lots of online tutorials on this but a lot of them use different methods.  I imagine the CS50 web app course touches on this at some point.
+4. Understanding virtual environments is key!  I imagine CS50 web app course touches on this too.
+5. Take the CS50 web app course :)
+6. Using .fetchall() or .fetchone() after my db.execute(SQL code) calls.  SQLAlchemy documentation eventually got me there.
