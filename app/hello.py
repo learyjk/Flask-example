@@ -78,10 +78,12 @@ def register():
         if row:
             return render_template("register.html", message="Invalid username/password")
 
-        data.execute("INSERT INTO users(user_id, hash, username, email) VALUES(default, :h, :u, :e)", {'h': hash, 'u': username, 'e': email})
+        data.execute("INSERT INTO users(user_id, hash, username, email) VALUES(default, :hash, :username, :email)", {'hash': hash, 'username': username, 'email': email})
         data.commit()
 
-        session["user_id"] = username
+        results = data.execute("SELECT user_id FROM users WHERE username=:username", {'username': username}).fetchone()
+
+        session['user_id'] = results['user_id']
 
         return redirect('/')
     else:
@@ -108,13 +110,13 @@ def login():
 
         # Ensure username exists and password is correct
         if row:
-            if not check_password_hash(row["hash"], request.form.get("password")):
+            if not check_password_hash(row['hash'], request.form.get("password")):
                 return render_template("login.html", message="Invalid username and/or password")
         else:
             return render_template("login.html", message="Invalid username and/or password")
 
         # Remember which user has logged in
-        session["user_id"] = row["user_id"]
+        session['user_id'] = row['user_id']
 
         # Redirect user to home page
         return redirect('/')
