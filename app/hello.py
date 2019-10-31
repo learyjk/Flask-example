@@ -20,7 +20,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 #os.environ['DATABASE_URL'] = postgres://sbcrjibpraivpg:cac3d5eaf635b550f67cf802268437d7f2dd6eccf84a13506ae52c5be32f53e4@ec2-107-21-200-103.compute-1.amazonaws.com:5432/d4keqqkhpmbhkn
-os.environ['SECRET_KEY'] = '3r6t_QQHDSCMtGGjbBYuQQ'
+#os.environ['SECRET_KEY'] = '3r6t_QQHDSCMtGGjbBYuQQ'
 
 # Check for environment variable
 if not os.getenv("DATABASE_URL"):
@@ -38,6 +38,7 @@ data = scoped_session(sessionmaker(bind=engine))
 def home():
     history = data.execute("SELECT timestamp, name, score FROM scores JOIN wods ON scores.id=wods.id WHERE user_id=:user_id ORDER BY timestamp DESC",
                            {'user_id': session['user_id']}).fetchall()
+    data.commit()
 
     # turn history into a dict to support reassignment
     h = {}
@@ -71,6 +72,7 @@ def register():
         # query the database for username provided
         row = data.execute("SELECT * FROM users WHERE username=:username",
                            {'username': username}).fetchone()
+        data.commit()
 
         # check if username is available.
         if row:
@@ -102,6 +104,7 @@ def login():
         # Query database for username
         row = data.execute("SELECT * FROM users WHERE username = :username",
                            {'username': username}).fetchone()
+        data.commit()
 
         # Ensure username exists and password is correct
         if row:
@@ -126,12 +129,11 @@ def wodg():
 
     # get random int between 0 and num rows in workout database.
     num_rows = data.execute('SELECT count(*) FROM wods').fetchall()[0][0]
+    data.commit()
     workout_id = randint(1, num_rows)
-    results = data.execute(
-        'SELECT * FROM wods WHERE id=:workout_id', {'workout_id': workout_id})
-
-    # fetch the workout
-    row = results.fetchone()
+    row = data.execute(
+        'SELECT * FROM wods WHERE id=:workout_id', {'workout_id': workout_id}).fetchone()
+    data.commit()
 
     # creates a row with name as workout[1], type as [2], and the rest.
     workout = []
@@ -148,6 +150,7 @@ def wodg():
 def enterscores():
     if request.method == "GET":
         workouts = data.execute("SELECT name FROM wods")
+        data.commit()
         return render_template('enterscore.html', workouts=workouts)
     else:
         workout = request.form.get('workoutname')
