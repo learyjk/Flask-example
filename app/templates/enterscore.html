@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+    <p>
+    <div class="enterscore" align="center">
+
+        <div class="card border-dark mb-3" style="max-width: 18rem;">
+
+            <div class="card-header"><h1>Enter Score</h1></div>
+            <div class="card-body text-dark">
+                <form action="/enterscore" method="post">
+                    <div class="form-group">
+                        <select class="form-control" name="workoutname">
+                            {% for workout in workouts %}
+                                <option>{{workout['name']}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input autocomplete="off" autofocus class="form-control" name="score" placeholder="Score" type="text">
+                    </div>
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </form>
+            </div>
+            <p>
+        </div>
+    </div>
+
+{% endblock %}

@@ -37,7 +37,7 @@ data = scoped_session(sessionmaker(bind=engine))
 @app.route('/')
 @login_required
 def home():
-    history = data.execute("SELECT timestamp, name, score FROM scores JOIN wods ON scores.id=wods.id WHERE user_id=12 ORDER BY timestamp DESC",
+    history = data.execute("SELECT timestamp, name, score FROM scores JOIN wods ON scores.id=wods.id WHERE user_id=:user_id ORDER BY timestamp DESC",
                            {'user_id': session['user_id']}).fetchall()
 
     # turn history into a dict to support reassignment
@@ -142,6 +142,24 @@ def wodg():
         workout.append(exercise)
 
     return render_template('wodg.html', workout=workout)
+
+
+@app.route('/enterscore', methods=["GET", "POST"])
+@login_required
+def enterscores():
+    if request.method == "GET":
+        workouts = data.execute("SELECT name FROM wods")
+        return render_template('enterscore.html', workouts=workouts)
+    else:
+        workout = request.form.get('workoutname')
+        score = request.form.get('score')
+
+        row = data.execute("SELECT id FROM wods WHERE name=:name", {'name': workout}).fetchone()
+
+        data.execute("INSERT INTO scores(user_id, id, score, timestamp) VALUES(:u, :i, :s, now())", {'u': session['user_id'], 'i': row['id'], 's': score})
+        data.commit()
+
+        return redirect('/')
 
 
 @app.route('/logout')
