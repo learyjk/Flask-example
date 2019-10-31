@@ -1,5 +1,6 @@
 import os
 import sqlalchemy as db
+import datetime
 
 from flask import Flask, render_template, request, redirect, session
 from flask_session import Session
@@ -36,7 +37,20 @@ data = scoped_session(sessionmaker(bind=engine))
 @app.route('/')
 @login_required
 def home():
-    return render_template('home.html')
+    history = data.execute("SELECT timestamp, name, score FROM scores JOIN wods ON scores.id=wods.id WHERE user_id=12 ORDER BY timestamp DESC",
+                           {'user_id': session['user_id']}).fetchall()
+
+    # turn history into a dict to support reassignment
+    h = {}
+    for i in range(len(history)):
+        h[i] = dict(history[i])
+
+    # reformat timestamp to something more readable
+    for i in range(len(history)):
+        d = history[i]['timestamp'].strftime("%B %d, %Y %H:%M")
+        h[i]['timestamp'] = d
+
+    return render_template('home.html', h=h)
 
 
 @app.route('/register', methods=["GET", "POST"])
@@ -56,7 +70,8 @@ def register():
             return render_template('register.html', message="Passwords must match")
 
         # query the database for username provided
-        row = data.execute("SELECT * FROM users WHERE username=:username", {'username': username}).fetchone()
+        row = data.execute("SELECT * FROM users WHERE username=:username",
+                           {'username': username}).fetchone()
 
         # check if username is available.
         if row:
