@@ -1,1 +1,1 @@
-web: python --chdir app hello:app
+web: python3 app/hello.py
